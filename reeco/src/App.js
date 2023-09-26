@@ -10,7 +10,7 @@ function App() {
       <Header />
       <OrderStrip />
       <OrderInfo />
-      <Dashboard />
+     <Dashboard />
     </div>
   );
 }

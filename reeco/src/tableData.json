@@ -1,0 +1,39 @@
+[
+    {
+      "productName": "Product A",
+      "productImage": "firstImg.png",
+      "brand": "Brand A",
+      "price": "$100",
+      "quantity": 5,
+      "total": "$500",
+      "status": "In Stock"
+    },
+    {
+        "productName": "Product B",
+        "productImage": "secondImg.png",
+        "brand": "Brand B",
+        "price": "$150",
+        "quantity": 5,
+        "total": "$600",
+        "status": "not in stock"
+      },
+      {
+        "productName": "Product C",
+        "productImage": "firstImg.png",
+        "brand": "Brand C",
+        "price": "$100",
+        "quantity": 5,
+        "total": "$700",
+        "status": "In Stock"
+      },
+      {
+        "productName": "Product D",
+        "productImage": "secondImg.png",
+        "brand": "Brand D",
+        "price": "$120",
+        "quantity": 9,
+        "total": "$440",
+        "status": "Not in Stock"
+      }
+  ]
+  
