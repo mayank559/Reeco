@@ -6,7 +6,7 @@
       "price": "$100",
       "quantity": 5,
       "total": "$500",
-      "status": "In Stock"
+      "status": ""
     },
     {
         "productName": "Product B",
@@ -15,7 +15,7 @@
         "price": "$150",
         "quantity": 5,
         "total": "$600",
-        "status": "not in stock"
+        "status": ""
       },
       {
         "productName": "Product C",
@@ -24,7 +24,7 @@
         "price": "$100",
         "quantity": 5,
         "total": "$700",
-        "status": "In Stock"
+        "status": ""
       },
       {
         "productName": "Product D",
@@ -33,7 +33,7 @@
         "price": "$120",
         "quantity": 9,
         "total": "$440",
-        "status": "Not in Stock"
+        "status": ""
       }
   ]
   

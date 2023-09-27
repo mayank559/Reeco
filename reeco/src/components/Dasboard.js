@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
@@ -16,7 +17,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import TableCell from '@mui/material/TableCell';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import tableReducer, { updateStatus } from '../redux/tableSlice.js';
+import Popup from './Popup.js';
 
 
 const Button = styled.button`
@@ -27,10 +30,38 @@ const Button = styled.button`
   cursor: pointer;
   border-radius:20px;
 `;
-
+const statusColors = {
+    approved: 'green',
+    missing: 'red',
+    'urgent-missing': 'orange',
+};
 
 const Dashboard = () => {
     const tableData = useSelector((state) => state.table.data);
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [productNameForPopup, setProductNameForPopup] = useState('');
+    const [statusToUpdate, setStatusToUpdate] = useState('');
+    const dispatch = useDispatch();
+
+    const handleStatusUpdate = (index, newStatus) => {
+
+        dispatch(updateStatus({ index, status: newStatus }));
+    };
+
+    const handleCrossIconClick = (index) => {
+
+        setIsPopupOpen(true);
+        setProductNameForPopup(tableData[index].productName);
+
+        setStatusToUpdate('urgent-missing');
+    };
+
+    const handleCheckIconClick = (index) => {
+
+        setStatusToUpdate('approved');
+
+        handleStatusUpdate(index, 'approved');
+    };
 
     return (
         <>
@@ -73,7 +104,7 @@ const Dashboard = () => {
                         <TableBody>
                             {tableData.map((row, index) => (
                                 <TableRow key={index}>
-                                    <TableCell style={{display:'flex', alignItems:'center'}}>
+                                    <TableCell style={{ display: 'flex', alignItems: 'center' }}>
                                         <img
                                             src={process.env.PUBLIC_URL + row.productImage}
                                             alt={row.productName}
@@ -85,24 +116,52 @@ const Dashboard = () => {
                                     <TableCell>{row.price}</TableCell>
                                     <TableCell>{row.quantity}</TableCell>
                                     <TableCell>{row.total}</TableCell>
-                                    <TableCell>
+                                    <TableCell style={{ textAlign: 'none' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                            <span>{row.status}</span>
+                                            <span
+                                                style={{
+                                                    width:'100px',
+                                                    textAlign:'center',
+                                                    backgroundColor: statusColors[row.status],
+                                                    color: 'white',
+                                                    borderRadius: '30px',
+                                                    padding: '6px 12px',
+                                                }}
+                                            >{row.status}</span>
                                             <div>
-                                                <IconButton>
+                                                <IconButton
+                                                    onClick={() => handleCheckIconClick(index)}
+                                                    style={{
+                                                        color: row.status === 'approved' ? '#42ed42' : 'inherit',
+                                                    }}
+                                                >
                                                     <CheckIcon />
                                                 </IconButton>
-                                                <IconButton>
+                                                <IconButton
+                                                    onClick={() => handleCrossIconClick(index)}
+                                                    style={{
+                                                        color: productNameForPopup === row.productName ? 'red' : 'inherit',
+                                                    }}
+                                                >
                                                     <CloseIcon />
                                                 </IconButton>
-                                                <IconButton>
-                                                    <EditIcon />
-                                                </IconButton>
+                                                <span style={{ margin: '10px 0 0 10px' }}>Edit</span>
                                             </div>
                                         </div>
                                     </TableCell>
                                 </TableRow>
                             ))}
+                            {isPopupOpen && (
+                                <Popup
+                                    productName={productNameForPopup}
+                                    onClose={() => setIsPopupOpen(false)}
+                                    onUpdateStatus={(newStatus) => {
+
+                                        handleStatusUpdate(tableData.findIndex((item) => item.productName === productNameForPopup), newStatus);
+                                        setIsPopupOpen(false);
+                                    }}
+                                />
+                            )}
                         </TableBody>
                     </Table>
                 </TableContainer>
